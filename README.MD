@@ -20,7 +20,18 @@ You need Rush installed globally to run this project.
 
 npm install -g @microsoft/rush #install Rush, if you haven't already
 
-rush install
+```
+
+Then, clone the repo:
+
+```bash
+git clone https://github.com/m8a-io/hyper-express-adapter.git
+
+```
+and run:
+
+```bash
+rush update
 
 ```
 
@@ -34,7 +45,7 @@ First, cd into the test app directory
 cd apps/hyper-express-test-app
 
 ```
-Open a second terminal, cd into libs/hyper-express-adapter and run:
+Open a second terminal, cd into`libs/hyper-express-adapter` and run:
 
 ```bash
 cd libs/hyper-express-adapter
