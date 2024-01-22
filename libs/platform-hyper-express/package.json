@@ -1,0 +1,43 @@
+{
+  "name": "@m8a/platform-hyper-express",
+  "version": "0.0.1",
+  "description": "Nest - modern, fast, powerful node.js web framework (@platform-hyper-express)",
+  "author": "Scott Molinari and Kamil Myśliwiec, et al",
+  "license": "MIT",
+  "homepage": "https://nestjs.com",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/nest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nestjs/nest.git",
+    "directory": "packages/platform-express"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "nest build",
+    "build:watch": "nest build --watch"
+  },
+  "dependencies": {
+    "body-parser": "1.20.2",
+    "content-type": "1.0.5",
+    "cors": "2.8.5",
+    "hyper-express": "6.14.8",
+    "live-directory": "3.0.3",
+    "rxjs": "7.8.1",
+    "tslib": "2.6.2",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@nestjs/common": "10.3.0",
+    "@nestjs/core": "10.3.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0"
+  }
+}
