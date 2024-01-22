@@ -85,29 +85,29 @@ rushx start # or start:dev
 TODOS:
 
 └─ hyper-express-adapter open tests and work 
-  - [] - middleware-class.spec.ts
-  - [] - middleware-execute-order.spec.ts
-  - [] - middleware-run-match-route.ts
-  - [] - middleware-with-versioning.spec.ts
-  - [] - middleware.spec.ts
-  - [] - router-module-middleware.spec.ts
-  - [] - router-module.spec.ts
-  - [] - hyper-express-get-url.spec.ts
-  - [] - global-prefix.spec.ts
-  - [] - hyper-express.spec.ts
-  - [] - fastify.spec.ts
-  - [] - error-gateway.spec.ts
-  - [] - gateway-ack.spec.ts
-  - [] - gateway.spec.ts
-  - [] - ws-gateway.spec.ts
-  - [] - ack.gateway.ts
-  - [] - app.gateway.ts
-  - [] - core.gateway.ts
-  - [] - error.gateway.ts
-  - [] - example-path.gateway.ts
-  - [] - namespace.gateway.ts
-  - [] - request.filter.ts
-  - [] - server.gateway.ts
-  - [] - ws-path.gateway.ts
-  - [] - ws-path2.gateway.ts
+  - [ ] - middleware-class.spec.ts
+  - [ ] - middleware-execute-order.spec.ts
+  - [ ] - middleware-run-match-route.ts
+  - [ ] - middleware-with-versioning.spec.ts
+  - [ ] - middleware.spec.ts
+  - [ ] - router-module-middleware.spec.ts
+  - [ ] - router-module.spec.ts
+  - [ ] - hyper-express-get-url.spec.ts
+  - [ ] - global-prefix.spec.ts
+  - [ ] - hyper-express.spec.ts
+  - [ ] - fastify.spec.ts
+  - [ ] - error-gateway.spec.ts
+  - [ ] - gateway-ack.spec.ts
+  - [ ] - gateway.spec.ts
+  - [ ] - ws-gateway.spec.ts
+  - [ ] - ack.gateway.ts
+  - [ ] - app.gateway.ts
+  - [ ] - core.gateway.ts
+  - [ ] - error.gateway.ts
+  - [ ] - example-path.gateway.ts
+  - [ ] - namespace.gateway.ts
+  - [ ] - request.filter.ts
+  - [ ] - server.gateway.ts
+  - [ ] - ws-path.gateway.ts
+  - [ ] - ws-path2.gateway.ts
    
