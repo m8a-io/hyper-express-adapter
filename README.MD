@@ -7,7 +7,7 @@
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
 
-This is an experimental package for a [hyper-express] adapter for NestJS.
+This is an experimental package for a [hyper-express](https://github.com/kartikk221/hyper-express) adapter for NestJS.
 
 
 ## Requirements
