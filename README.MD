@@ -84,54 +84,30 @@ rushx start # or start:dev
 
 TODOS:
 
-└─ hyper-express-adapter-new
-   [] - middleware-class.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - middleware-execute-order.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - middleware-run-match-route.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - middleware-with-versioning.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - middleware.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - router-module-middleware.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - router-module.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - hyper-express-get-url.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - global-prefix.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - hyper-express.spec.ts
-   │  └─ line 76: TODO : temporarily turned off (flaky test)
-   [] - fastify.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - error-gateway.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - gateway-ack.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - gateway.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - ws-gateway.spec.ts
-   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
-   [] - ack.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - app.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - core.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - error.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - example-path.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - namespace.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - request.filter.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - server.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   [] - ws-path.gateway.ts
-   │  └─ line 1: TODO : need to use hyper-express ws
-   └─ ws-path2.gateway.ts
-      └─ line 1: TODO : need to use hyper-express ws
+└─ hyper-express-adapter open tests and work 
+  - [] - middleware-class.spec.ts
+  - [] - middleware-execute-order.spec.ts
+  - [] - middleware-run-match-route.ts
+  - [] - middleware-with-versioning.spec.ts
+  - [] - middleware.spec.ts
+  - [] - router-module-middleware.spec.ts
+  - [] - router-module.spec.ts
+  - [] - hyper-express-get-url.spec.ts
+  - [] - global-prefix.spec.ts
+  - [] - hyper-express.spec.ts
+  - [] - fastify.spec.ts
+  - [] - error-gateway.spec.ts
+  - [] - gateway-ack.spec.ts
+  - [] - gateway.spec.ts
+  - [] - ws-gateway.spec.ts
+  - [] - ack.gateway.ts
+  - [] - app.gateway.ts
+  - [] - core.gateway.ts
+  - [] - error.gateway.ts
+  - [] - example-path.gateway.ts
+  - [] - namespace.gateway.ts
+  - [] - request.filter.ts
+  - [] - server.gateway.ts
+  - [] - ws-path.gateway.ts
+  - [] - ws-path2.gateway.ts
+   
