@@ -1,0 +1,1 @@
+//# sourceMappingURL=ws-path2.gateway.js.map

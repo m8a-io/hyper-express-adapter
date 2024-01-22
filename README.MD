@@ -28,10 +28,14 @@ Then, clone the repo:
 git clone https://github.com/m8a-io/hyper-express-adapter.git
 
 ```
-and run:
+the cd into the repo folder and run:
 
 ```bash
+cd hyper-express-adapter
+
 rush update
+
+rush build
 
 ```
 
@@ -77,3 +81,57 @@ Then, run:
 ```bash
 rushx start # or start:dev
 ``` 
+
+TODOS:
+
+└─ hyper-express-adapter-new
+   [] - middleware-class.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - middleware-execute-order.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - middleware-run-match-route.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - middleware-with-versioning.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - middleware.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - router-module-middleware.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - router-module.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - hyper-express-get-url.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - global-prefix.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - hyper-express.spec.ts
+   │  └─ line 76: TODO : temporarily turned off (flaky test)
+   [] - fastify.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - error-gateway.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - gateway-ack.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - gateway.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - ws-gateway.spec.ts
+   │  └─ line 1: TODO : rewrite test for hyper-express, if needed
+   [] - ack.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - app.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - core.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - error.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - example-path.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - namespace.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - request.filter.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - server.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   [] - ws-path.gateway.ts
+   │  └─ line 1: TODO : need to use hyper-express ws
+   └─ ws-path2.gateway.ts
+      └─ line 1: TODO : need to use hyper-express ws
