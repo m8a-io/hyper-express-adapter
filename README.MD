@@ -10,9 +10,18 @@
 This is an experimental package for a [hyper-express](https://github.com/kartikk221/hyper-express) adapter for NestJS.
 
 
+## Motivation
+There are a number or articles reporting how much faster Hyper-Express is above Express and even Fastify. 
+ - [Bench Marks from the Hyper Express author](https://github.com/kartikk221/hyper-express/blob/master/docs/Benchmarks.md)
+ - [The Fastest Frameworks for Node](https://medium.com/deno-the-complete-reference/node-js-the-fastest-web-framework-in-2024-fa11e513fa75)
+
+Hyper-Express gets its speed from using uWebSockets.js, which is a Node.js WebSocket library. It is the fastest Node.js WebSocket library available and is also the fastest Node.js HTTP library available. It is written in C++ and compiles to native code. It is also the fastest and most memory efficient Node.js HTTP library available. 
+
+This project attempts to create a NestJS adapter for Hyper-Express.
+
 ## Requirements
 
-You need Rush installed globally to run this project.
+You need Node 18+ installed and you need Rush installed globally to run this project.
 
 ## Installation
 
