@@ -1,7 +1,10 @@
-//TODO: rewrite test for hyper-express, if needed
-import { INestApplication, MiddlewareConsumer, Module } from '@nestjs/common';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
+import { request, spec } from 'pactum';
 
 const RETURN_VALUE_A = 'test_A';
 const RETURN_VALUE_B = 'test_B';
@@ -38,22 +41,24 @@ class ModuleB {
 class TestModule {}
 
 describe('Middleware (execution order)', () => {
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
   beforeEach(async () => {
     app = (
       await Test.createTestingModule({
         imports: [TestModule],
       }).compile()
-    ).createNestApplication();
+    ).createNestApplication(new HyperExpressAdapter());
 
-    await app.init();
+    await app.listen(9999);
+    const url = await app.getUrl();
+    request.setBaseUrl(
+      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
+    );
   });
 
   it(`should execute middleware in topological order`, () => {
-    return request(app.getHttpServer())
-      .get('/hello')
-      .expect(200, RETURN_VALUE_B);
+    return spec().get('/hello').expectStatus(200).expectBody(RETURN_VALUE_B);
   });
 
   afterEach(async () => {
