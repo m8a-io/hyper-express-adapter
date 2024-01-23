@@ -98,7 +98,7 @@ rushx start # or start:dev
   - [X] - middleware-class.spec.ts
   - [X] - middleware-execute-order.spec.ts
   - [X] - middleware-run-match-route.ts
-  - [ ] - middleware-with-versioning.spec.ts
+  - [X] - middleware-with-versioning.spec.ts
   - [ ] - middleware.spec.ts
   - [ ] - router-module-middleware.spec.ts
   - [ ] - router-module.spec.ts

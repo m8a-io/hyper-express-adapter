@@ -1,8 +1,6 @@
-//TODO: rewrite test for hyper-express, if needed
 import {
   Controller,
   Get,
-  INestApplication,
   MiddlewareConsumer,
   Module,
   RequestMethod,
@@ -13,8 +11,13 @@ import {
 } from '@nestjs/common';
 import { CustomVersioningOptions } from '@nestjs/common/interfaces';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { spec } from 'pactum';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { appInit } from '../../utils/app-init';
 
 const RETURN_VALUE = 'test';
 const VERSIONED_VALUE = 'test_versioned';
@@ -45,7 +48,7 @@ class TestModule {
 }
 
 describe('Middleware', () => {
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
   describe('when using default URI versioning', () => {
     beforeEach(async () => {
@@ -55,10 +58,11 @@ describe('Middleware', () => {
       });
     });
 
-    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, () => {
-      return request(app.getHttpServer())
+    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, async () => {
+      return await spec()
         .get('/v1/versioned')
-        .expect(200, VERSIONED_VALUE);
+        .expectStatus(200)
+        .expectBody(VERSIONED_VALUE);
     });
   });
 
@@ -71,10 +75,11 @@ describe('Middleware', () => {
       });
     });
 
-    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, () => {
-      return request(app.getHttpServer())
+    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, async () => {
+      return await spec()
         .get('/version1/versioned')
-        .expect(200, VERSIONED_VALUE);
+        .expectStatus(200)
+        .expectBody(VERSIONED_VALUE);
     });
   });
 
@@ -85,16 +90,17 @@ describe('Middleware', () => {
           type: VersioningType.URI,
           defaultVersion: VERSION_NEUTRAL,
         },
-        async (app: INestApplication) => {
+        async (app: NestHyperExpressApplication) => {
           app.setGlobalPrefix('api');
         },
       );
     });
 
-    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, () => {
-      return request(app.getHttpServer())
+    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, async () => {
+      return await spec()
         .get('/api/v1/versioned')
-        .expect(200, VERSIONED_VALUE);
+        .expectStatus(200)
+        .expectBody(VERSIONED_VALUE);
     });
   });
 
@@ -106,11 +112,12 @@ describe('Middleware', () => {
       });
     });
 
-    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, () => {
-      return request(app.getHttpServer())
+    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, async () => {
+      return await spec()
         .get('/versioned')
-        .set('version', '1')
-        .expect(200, VERSIONED_VALUE);
+        .withHeaders('version', '1')
+        .expectStatus(200)
+        .expectBody(VERSIONED_VALUE);
     });
   });
 
@@ -123,10 +130,11 @@ describe('Middleware', () => {
       });
     });
 
-    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, () => {
-      return request(app.getHttpServer())
+    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, async () => {
+      return await spec()
         .get('/versioned')
-        .expect(200, VERSIONED_VALUE);
+        .expectStatus(200)
+        .expectBody(VERSIONED_VALUE);
     });
   });
 
@@ -140,10 +148,11 @@ describe('Middleware', () => {
       });
     });
 
-    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, () => {
-      return request(app.getHttpServer())
+    it(`forRoutes({ path: '/versioned', version: '1', method: RequestMethod.ALL })`, async () => {
+      return await spec()
         .get('/versioned')
-        .expect(200, VERSIONED_VALUE);
+        .expectStatus(200)
+        .expectBody(VERSIONED_VALUE);
     });
   });
 
@@ -154,19 +163,21 @@ describe('Middleware', () => {
 
 async function createAppWithVersioning(
   versioningOptions: VersioningOptions,
-  beforeInit?: (app: INestApplication) => Promise<void>,
-): Promise<INestApplication> {
+  beforeInit?: (app: NestHyperExpressApplication) => Promise<void>,
+): Promise<NestHyperExpressApplication> {
   const app = (
     await Test.createTestingModule({
       imports: [TestModule],
     }).compile()
-  ).createNestApplication();
+  ).createNestApplication<NestHyperExpressApplication>(
+    new HyperExpressAdapter(),
+  );
 
   app.enableVersioning(versioningOptions);
   if (beforeInit) {
     await beforeInit(app);
   }
-  await app.init();
+  await appInit(app);
 
   return app;
 }
