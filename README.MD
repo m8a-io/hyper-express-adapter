@@ -94,6 +94,7 @@ rushx start # or start:dev
 ##TODOS:
 
 └─ hyper-express-adapter open tests and work 
+```[tasklist]
   - [ ] - middleware-class.spec.ts
   - [ ] - middleware-execute-order.spec.ts
   - [ ] - middleware-run-match-route.ts
@@ -119,7 +120,8 @@ rushx start # or start:dev
   - [ ] - server.gateway.ts
   - [ ] - ws-path.gateway.ts
   - [ ] - ws-path2.gateway.ts
-   
+  
+```
 
    ## Usage 
 
