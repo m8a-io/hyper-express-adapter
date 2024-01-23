@@ -95,7 +95,7 @@ rushx start # or start:dev
 
 └─ hyper-express-adapter open tests and work 
 
-  - [ ] - middleware-class.spec.ts
+  - [X] - middleware-class.spec.ts
   - [ ] - middleware-execute-order.spec.ts
   - [ ] - middleware-run-match-route.ts
   - [ ] - middleware-with-versioning.spec.ts

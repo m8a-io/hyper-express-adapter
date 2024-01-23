@@ -1,17 +1,19 @@
-//TODO: rewrite test for hyper-express, if needed
 import {
   Controller,
   Get,
-  INestApplication,
   Injectable,
   MiddlewareConsumer,
   Module,
   RequestMethod,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { Response } from 'express';
+import { request, spec } from 'pactum';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
 
 const INCLUDED_VALUE = 'test_included';
 const RETURN_VALUE = 'test';
@@ -47,40 +49,42 @@ class TestModule {
 }
 
 describe('Middleware (class)', () => {
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
   beforeEach(async () => {
     app = (
       await Test.createTestingModule({
         imports: [TestModule],
       }).compile()
-    ).createNestApplication();
+    ).createNestApplication(new HyperExpressAdapter());
 
-    await app.init();
+    await app.listen(9999);
+    const url = await app.getUrl();
+    request.setBaseUrl(
+      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
+    );
   });
 
   it(`forRoutes(*)`, () => {
-    return request(app.getHttpServer())
-      .get('/hello')
-      .expect(200, WILDCARD_VALUE);
+    return spec().get('/hello').expectStatus(200).expectBody(WILDCARD_VALUE);
   });
 
   it(`/test forRoutes(*)`, () => {
-    return request(app.getHttpServer())
-      .get('/test')
-      .expect(200, WILDCARD_VALUE);
+    return spec().get('/test').expectStatus(200).expectBody(WILDCARD_VALUE);
   });
 
   it(`GET forRoutes(POST tests/included)`, () => {
-    return request(app.getHttpServer())
+    return spec()
       .get('/tests/included')
-      .expect(200, WILDCARD_VALUE);
+      .expectStatus(200)
+      .expectBody(WILDCARD_VALUE);
   });
 
   it(`POST forRoutes(POST tests/included)`, () => {
-    return request(app.getHttpServer())
+    return spec()
       .post('/tests/included')
-      .expect(201, INCLUDED_VALUE);
+      .expectStatus(201)
+      .expectBody(INCLUDED_VALUE);
   });
 
   afterEach(async () => {
