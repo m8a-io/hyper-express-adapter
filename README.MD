@@ -37,7 +37,7 @@ Then, clone the repo:
 git clone https://github.com/m8a-io/hyper-express-adapter.git
 
 ```
-the cd into the repo folder and run:
+Now cd into the repo folder and run:
 
 ```bash
 cd hyper-express-adapter
@@ -91,7 +91,7 @@ Then, run:
 rushx start # or start:dev
 ``` 
 
-TODOS:
+##TODOS:
 
 └─ hyper-express-adapter open tests and work 
   - [ ] - middleware-class.spec.ts
