@@ -15,7 +15,7 @@ There are a number of articles reporting how much faster Hyper-Express is above 
  - [Bench Marks from the Hyper Express author](https://github.com/kartikk221/hyper-express/blob/master/docs/Benchmarks.md)
  - [The Fastest Frameworks for Node](https://medium.com/deno-the-complete-reference/node-js-the-fastest-web-framework-in-2024-fa11e513fa75)
 
-Hyper-Express gets its speed from using [uWebSockets.js](https://github.com/uNetworking/uWebSockets), which is a Node.js WebSocket library. It is the fastest Node.js WebSocket library available and is also the fastest Node.js HTTP library available. It is written in C++ and compiles to native code. It is also the fastest and most memory efficient Node.js HTTP library available. 
+Hyper-Express gets its speed from using [uWebSockets.js](https://github.com/uNetworking/uWebSockets), which is a Node.js WebSocket library. It is the fastest Node.js WebSocket library available. It is written in C++ and compiles to native code. It is also the fastest and most memory efficient Node.js HTTP library available. 
 
 This project attempts to create a NestJS adapter for Hyper-Express.
 
