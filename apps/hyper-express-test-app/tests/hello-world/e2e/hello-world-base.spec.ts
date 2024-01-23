@@ -1,10 +1,13 @@
 import { Test } from '@nestjs/testing';
-import { request, spec } from 'pactum';
-import { HyperExpressAdapter, NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import { spec } from 'pactum';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
 import { AppModule } from '../src/app.module';
+import { appInit } from '../../utils/app-init';
 
 describe('Hello world (default adapter)', () => {
-  let server;
   let app: NestHyperExpressApplication;
 
   beforeEach(async () => {
@@ -12,14 +15,9 @@ describe('Hello world (default adapter)', () => {
       imports: [AppModule],
     }).compile();
 
-    app = module.createNestApplication(
-      new HyperExpressAdapter(),
-    );
-    await app.listen(9999);
-    const url = await app.getUrl();
-      request.setBaseUrl(
-        url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-      );
+    app = module.createNestApplication(new HyperExpressAdapter());
+
+    await appInit(app);
   });
 
   [
@@ -60,7 +58,6 @@ describe('Hello world (default adapter)', () => {
             .withHeaders('Host', host)
             .expectStatus(200)
             .expectHeader('authorization', 'Bearer');
-
         });
       });
 
@@ -70,8 +67,6 @@ describe('Hello world (default adapter)', () => {
           .withHeaders('Host', host)
           .expectStatus(200)
           .expectBody(greeting);
-        
-        
       });
 
       it(`/GET (Observable stream) "${greeting}"`, () => {

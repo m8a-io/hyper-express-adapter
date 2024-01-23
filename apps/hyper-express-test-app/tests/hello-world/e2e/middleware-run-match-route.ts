@@ -1,15 +1,15 @@
-//TODO: rewrite test for hyper-express, if needed
 import {
   Controller,
   Get,
-  INestApplication,
   Injectable,
   MiddlewareConsumer,
   NestMiddleware,
   Module,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
+import { appInit } from '../../utils/app-init';
+import { NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import { spec } from 'pactum';
 
 /**
  * Number of times that the middleware was executed.
@@ -48,7 +48,7 @@ class TestModule {
 }
 
 describe('Middleware (run on route match)', () => {
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
   beforeEach(async () => {
     triggerCounter = 0;
@@ -58,40 +58,44 @@ describe('Middleware (run on route match)', () => {
       }).compile()
     ).createNestApplication();
 
-    await app.init();
+    await appInit(app);
   });
 
-  it(`forRoutes(TestController) should execute middleware once when request url is equal match`, () => {
-    return request(app.getHttpServer())
+  it(`forRoutes(TestController) should execute middleware once when request url is equal match`, async () => {
+    return spec()
       .get('/test')
-      .expect(200)
+      .expectStatus(200)
+      .toss()
       .then(() => {
         expect(triggerCounter).toBe(1);
       });
   });
 
-  it(`forRoutes(TestController) should execute middleware once when request url is not equal match`, () => {
-    return request(app.getHttpServer())
+  it(`forRoutes(TestController) should execute middleware once when request url is not equal match`, async () => {
+    return await spec()
       .get('/1')
-      .expect(200)
+      .expectStatus(200)
+      .toss()
       .then(() => {
         expect(triggerCounter).toBe(1);
       });
   });
 
-  it(`forRoutes(TestController) should execute middleware once when request url is not of nested params`, () => {
-    return request(app.getHttpServer())
+  it(`forRoutes(TestController) should execute middleware once when request url is not of nested params`, async () => {
+    return await spec()
       .get('/static/route')
-      .expect(200)
+      .expectStatus(200)
+      .toss()
       .then(() => {
         expect(triggerCounter).toBe(1);
       });
   });
 
-  it(`forRoutes(TestController) should execute middleware once when request url is of nested params`, () => {
-    return request(app.getHttpServer())
+  it(`forRoutes(TestController) should execute middleware once when request url is of nested params`, async () => {
+    return await spec()
       .get('/1/abc')
-      .expect(200)
+      .expectStatus(200)
+      .toss()
       .then(() => {
         expect(triggerCounter).toBe(1);
       });

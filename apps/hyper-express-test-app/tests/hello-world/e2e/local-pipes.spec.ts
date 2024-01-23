@@ -1,7 +1,11 @@
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { request, spec } from 'pactum';
-import { HyperExpressAdapter, NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import { spec } from 'pactum';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { appInit } from '../../utils/app-init';
 
 describe('Hello world (default adapter)', () => {
   let app: NestHyperExpressApplication;
@@ -15,20 +19,13 @@ describe('Hello world (default adapter)', () => {
       new HyperExpressAdapter(),
     );
 
-    await app.listen(9999);
-    const url = await app.getUrl();
-    request.setBaseUrl(
-      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-    );
+    await appInit(app);
   });
 
   it(`host=example.com should execute locally injected pipe by HelloController`, () => {
-    return spec()
-      .get('/hello/local-pipe/1')
-      .expectStatus(200)
-      .expectBody({
-        id: '1',
-      });
+    return spec().get('/hello/local-pipe/1').expectStatus(200).expectBody({
+      id: '1',
+    });
   });
 
   it(`host=host.example.com should execute locally injected pipe by HostController`, () => {
@@ -44,10 +41,7 @@ describe('Hello world (default adapter)', () => {
   });
 
   it(`should return 404 for mismatched host`, () => {
-    return spec()
-      .get('/host/local-pipe/1')
-      .expectStatus(404)
-      .expectBody({
+    return spec().get('/host/local-pipe/1').expectStatus(404).expectBody({
       error: 'Not Found',
       message: 'Cannot GET /host/local-pipe/1',
       statusCode: 404,

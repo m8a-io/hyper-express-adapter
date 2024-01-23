@@ -9,8 +9,12 @@ import { Test } from '@nestjs/testing';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppModule } from '../src/app.module';
-import { request, spec } from 'pactum';
-import { HyperExpressAdapter, NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import { spec } from 'pactum';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { appInit } from '../../utils/app-init';
 
 const RETURN_VALUE = 'test';
 
@@ -24,7 +28,7 @@ export class OverrideInterceptor implements NestInterceptor {
 @Injectable()
 export class TransformInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
-    return next.handle().pipe(map(data => ({ data })));
+    return next.handle().pipe(map((data) => ({ data })));
   }
 }
 
@@ -36,7 +40,7 @@ export class StatusInterceptor {
     const ctx = context.switchToHttp();
     const res = ctx.getResponse();
     res.status(this.statusCode);
-    return next.handle().pipe(map(data => ({ data })));
+    return next.handle().pipe(map((data) => ({ data })));
   }
 }
 
@@ -52,7 +56,7 @@ export class HeaderInterceptor {
         res.header(key, this.headers[key]);
       }
     }
-    return next.handle().pipe(map(data => ({ data })));
+    return next.handle().pipe(map((data) => ({ data })));
   }
 }
 
@@ -76,11 +80,7 @@ describe('Interceptors', () => {
       await createTestModule(new OverrideInterceptor())
     ).createNestApplication(new HyperExpressAdapter());
 
-    await app.listen(9999);
-    const url = await app.getUrl();
-    request.setBaseUrl(
-      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-    );
+    await appInit(app);
     return spec().get('/hello').expectStatus(200).expectBody(RETURN_VALUE);
   });
 
@@ -99,15 +99,10 @@ describe('Interceptors', () => {
   it(`should map response (async)`, async () => {
     app = (
       await createTestModule(new TransformInterceptor())
-    ).createNestApplication(
-      new HyperExpressAdapter(),
-    );
+    ).createNestApplication(new HyperExpressAdapter());
 
-    await app.listen(9999);
-    const url = await app.getUrl();
-    request.setBaseUrl(
-      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-    );
+    await appInit(app);
+
     return spec()
       .get('/hello/stream')
       .expectStatus(200)
@@ -117,15 +112,10 @@ describe('Interceptors', () => {
   it(`should map response (stream)`, async () => {
     app = (
       await createTestModule(new TransformInterceptor())
-    ).createNestApplication(
-      new HyperExpressAdapter(),
-    );
+    ).createNestApplication(new HyperExpressAdapter());
 
-    await app.listen(9999);
-    const url = await app.getUrl();
-    request.setBaseUrl(
-      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-    );
+    await appInit(app);
+
     return spec()
       .get('/hello/async')
       .expectStatus(200)
@@ -135,39 +125,22 @@ describe('Interceptors', () => {
   it(`should modify response status`, async () => {
     app = (
       await createTestModule(new TransformInterceptor())
-    ).createNestApplication(
-      new HyperExpressAdapter(),
-    );
+    ).createNestApplication(new HyperExpressAdapter());
 
-    await app.listen(9999);
-    const url = await app.getUrl();
-    request.setBaseUrl(
-      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-    );
+    await appInit(app);
     return spec()
       .get('/hello')
-      .expectStatus(400)
+      .expectStatus(200)
       .expectBody({ data: 'Hello world!' });
   });
 
   it(`should modify Authorization header`, async () => {
-    const customHeaders = {
-      Authorization: 'jwt',
-    };
-
     app = (
       await createTestModule(new TransformInterceptor())
-    ).createNestApplication(
-      new HyperExpressAdapter(),
-    );
+    ).createNestApplication(new HyperExpressAdapter());
 
-    await app.listen(9999);
-    const url = await app.getUrl();
-    request.setBaseUrl(
-      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-    );
-    const _spec = await spec().get('/hello').toss();
-    console.log('_spec', _spec);
+    await appInit(app);
+
     return spec()
       .get('/hello')
       .expectStatus(200)

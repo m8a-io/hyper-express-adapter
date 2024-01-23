@@ -1,13 +1,17 @@
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { request, spec } from 'pactum';
-import { HyperExpressAdapter, NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { appInit } from '../../utils/app-init';
 
 describe('Hello world (hyper express instance with multiple applications)', () => {
   let apps: NestHyperExpressApplication[];
   process.setMaxListeners(12);
 
-  beforeEach( async () => {
+  beforeEach(async () => {
     const module1 = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -17,23 +21,19 @@ describe('Hello world (hyper express instance with multiple applications)', () =
 
     apps = [
       module1.createNestApplication<NestHyperExpressApplication>(
-        new HyperExpressAdapter()
+        new HyperExpressAdapter(),
       ),
-  
-      module2.createNestApplication<NestHyperExpressApplication>(
-        new HyperExpressAdapter()
-      ).setGlobalPrefix('/app2')
-    ]
+
+      module2
+        .createNestApplication<NestHyperExpressApplication>(
+          new HyperExpressAdapter(),
+        )
+        .setGlobalPrefix('/app2'),
+    ];
 
     apps.map(async (app, index) => {
-      await app.listen(9998 + index);
-      const url = await app.getUrl();
-      request.setBaseUrl(
-        url
-          .replace('+unix', '')
-          .replace('%3A', ':'),
-      );
-    });   
+      await appInit(app, 9998 + index);
+    });
   });
 
   it(`/GET`, () => {

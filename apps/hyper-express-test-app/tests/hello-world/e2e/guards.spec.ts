@@ -1,12 +1,13 @@
-import {
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { HyperExpressAdapter, NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
 import { request, spec } from 'pactum';
+import { appInit } from '../../utils/app-init';
 
 @Injectable()
 export class AuthGuard {
@@ -34,21 +35,14 @@ describe('Guards', () => {
   let app: NestHyperExpressApplication;
 
   it(`should prevent access (unauthorized)`, async () => {
-    app = (await createTestModule(new AuthGuard()))
-      .createNestApplication(
-        new HyperExpressAdapter(),
-      );
-    await app.listen(9999);
-    const url = await app.getUrl();
-      request.setBaseUrl(
-        url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-      );
-
+    app = (await createTestModule(new AuthGuard())).createNestApplication(
+      new HyperExpressAdapter(),
+    );
+    await appInit(app);
     return spec().get('/hello').expectStatus(401);
   });
 
   afterEach(async () => {
-     await app.close();
+    await app.close();
   });
-  
 });
