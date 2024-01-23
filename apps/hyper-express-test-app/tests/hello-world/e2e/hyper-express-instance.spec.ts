@@ -43,7 +43,7 @@ describe('Hello world (hyper-express instance)', () => {
   });
 
   it(`/GET { host: ":tenant.example.com" } not matched`, async () => {
-    return await spec().get('/host').expectStatus(500).expectJson({
+    return await spec().get('/host').expectStatus(404).expectJson({
       statusCode: 404,
       error: 'Not Found',
       message: 'Cannot GET /host',

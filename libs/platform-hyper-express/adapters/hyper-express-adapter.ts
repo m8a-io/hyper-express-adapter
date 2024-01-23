@@ -243,7 +243,7 @@ export class HyperExpressAdapter extends AbstractHttpAdapter<
   public getType(): string {
     //for compatibillity
     // console.log('hyper-express');
-    return 'express';
+    return 'hyper-express';
   }
 
   public applyVersionFilter(

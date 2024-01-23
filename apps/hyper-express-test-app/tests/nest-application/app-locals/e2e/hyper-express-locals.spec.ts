@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { request, spec } from 'pactum';
-import { HyperExpressAdapter, NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import { appInit } from '../../../utils/app-init';
+import { spec } from 'pactum';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
 
 describe('App-level globals (Express Application)', () => {
   let module: TestingModule;
@@ -16,27 +20,17 @@ describe('App-level globals (Express Application)', () => {
       new HyperExpressAdapter(),
     );
 
-    await app.listen(9999);
-    const url = await app.getUrl();
-    request.setBaseUrl(
-      url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),
-    );
+    await appInit(app);
   });
 
   it('should get "title" from "app.locals"', async () => {
     app.setLocal('title', 'My Website');
-    await spec()
-      .get('/')
-      .expectStatus(200)
-      .expectBodyContains('My Website');
+    await spec().get('/').expectStatus(200).expectBodyContains('My Website');
   });
 
   it('should get "email" from "app.locals"', async () => {
     app.setLocal('email', 'admin@example.com');
-    spec()
-      .get('/')
-      .expectStatus(200)
-      .expectBodyContains('admin@example.com');
+    spec().get('/').expectStatus(200).expectBodyContains('admin@example.com');
   });
 
   afterEach(async () => {

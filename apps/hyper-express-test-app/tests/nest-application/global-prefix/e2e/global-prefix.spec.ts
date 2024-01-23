@@ -1,52 +1,61 @@
-//TODO: rewrite test for hyper-express, if needed
-import { INestApplication, RequestMethod } from '@nestjs/common';
+import { RequestMethod } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
 import {
   AppModule,
   MIDDLEWARE_PARAM_VALUE,
   MIDDLEWARE_VALUE,
 } from '../src/app.module';
+import { appInit } from '../../../utils/app-init';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { spec } from 'pactum';
 
 describe('Global prefix', () => {
-  let server;
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    app = module.createNestApplication();
+    app = module.createNestApplication<NestHyperExpressApplication>(
+      new HyperExpressAdapter(),
+    );
   });
 
   it(`should use the global prefix`, async () => {
     app.setGlobalPrefix('/api/v1');
 
-    server = app.getHttpServer();
-    await app.init();
+    await appInit(app);
 
-    await request(server).get('/health').expect(404);
+    await spec().get('/health').expectStatus(404);
 
-    await request(server).get('/api/v1/health').expect(200);
+    await spec().get('/api/v1/health').expectStatus(200);
   });
 
   it(`should exclude the path as string`, async () => {
     app.setGlobalPrefix('/api/v1', { exclude: ['/test', '/middleware'] });
 
-    server = app.getHttpServer();
-    await app.init();
-    await request(server).get('/test').expect(200);
-    await request(server).post('/test').expect(201);
+    await appInit(app);
+    await spec().get('/test').expectStatus(200);
+    await spec().post('/test').expectStatus(201);
 
-    await request(server).get('/api/v1/test').expect(404);
-    await request(server).post('/api/v1/test').expect(404);
+    await spec().get('/api/v1/test').expectStatus(404);
+    await spec().post('/api/v1/test').expectStatus(404);
 
-    await request(server).get('/middleware').expect(200, MIDDLEWARE_VALUE);
-    await request(server).post('/middleware').expect(201, MIDDLEWARE_VALUE);
+    await spec()
+      .get('/middleware')
+      .expectStatus(200)
+      .expectBody(MIDDLEWARE_VALUE);
+    await spec()
+      .post('/middleware')
+      .expectStatus(201)
+      .expectBody(MIDDLEWARE_VALUE);
 
-    await request(server).get('/api/v1/middleware').expect(404);
-    await request(server).post('/api/v1/middleware').expect(404);
+    await spec().get('/api/v1/middleware').expectStatus(404);
+    await spec().post('/api/v1/middleware').expectStatus(404);
   });
 
   it(`should exclude the path as RouteInfo`, async () => {
@@ -57,20 +66,23 @@ describe('Global prefix', () => {
       ],
     });
 
-    server = app.getHttpServer();
-    await app.init();
+    await appInit(app);
 
-    await request(server).get('/health').expect(200);
+    await spec().get('/health').expectStatus(200);
 
-    await request(server).get('/middleware').expect(404);
-    await request(server).post('/middleware').expect(201, MIDDLEWARE_VALUE);
+    await spec().get('/middleware').expectStatus(404);
+    await spec()
+      .post('/middleware')
+      .expectStatus(201)
+      .expectBody(MIDDLEWARE_VALUE);
 
-    await request(server).get('/api/v1/health').expect(404);
+    await spec().get('/api/v1/health').expectStatus(404);
 
-    await request(server)
+    await spec()
       .get('/api/v1/middleware')
-      .expect(200, MIDDLEWARE_VALUE);
-    await request(server).post('/api/v1/middleware').expect(404);
+      .expectStatus(200)
+      .expectBody(MIDDLEWARE_VALUE);
+    await spec().post('/api/v1/middleware').expectStatus(404);
   });
 
   it(`should only exclude the GET RequestMethod`, async () => {
@@ -78,14 +90,13 @@ describe('Global prefix', () => {
       exclude: [{ path: '/test', method: RequestMethod.GET }],
     });
 
-    server = app.getHttpServer();
-    await app.init();
+    await appInit(app);
 
-    await request(server).get('/test').expect(200);
+    await spec().get('/test').expectStatus(200);
 
-    await request(server).post('/test').expect(404);
+    await spec().post('/test').expectStatus(404);
 
-    await request(server).post('/api/v1/test').expect(201);
+    await spec().post('/api/v1/test').expectStatus(201);
   });
 
   it(`should exclude the path as a mix of string and RouteInfo`, async () => {
@@ -93,12 +104,11 @@ describe('Global prefix', () => {
       exclude: ['test', { path: '/health', method: RequestMethod.GET }],
     });
 
-    server = app.getHttpServer();
-    await app.init();
+    await appInit(app);
 
-    await request(server).get('/health').expect(200);
+    await spec().get('/health').expectStatus(200);
 
-    await request(server).get('/test').expect(200);
+    await spec().get('/test').expectStatus(200);
   });
 
   it(`should exclude the path with route param`, async () => {
@@ -106,29 +116,30 @@ describe('Global prefix', () => {
       exclude: ['/hello/:name', '/middleware/:name'],
     });
 
-    server = app.getHttpServer();
-    await app.init();
+    await appInit(app);
 
-    await request(server)
+    await spec()
       .get('/hello/foo')
-      .expect(200, 'Hello: Data attached in middleware');
+      .expectStatus(200)
+      .expectBody('Hello: Data attached in middleware');
 
-    await request(server)
+    await spec()
       .get('/middleware/foo')
-      .expect(200, MIDDLEWARE_PARAM_VALUE);
+      .expectStatus(200)
+      .expectBody(MIDDLEWARE_PARAM_VALUE);
 
-    await request(server).get('/api/v1/middleware/foo').expect(404);
+    await spec().get('/api/v1/middleware/foo').expectStatus(404);
   });
 
   it(`should get the params in the global prefix`, async () => {
     app.setGlobalPrefix('/api/:tenantId');
 
-    server = app.getHttpServer();
-    await app.init();
+    await appInit(app);
 
-    await request(server)
+    await spec()
       .get('/api/test/params')
-      .expect(200, { '0': 'params', tenantId: 'test' });
+      .expectStatus(200)
+      .expectBody({ '0': 'params', tenantId: 'test' });
   });
 
   afterEach(async () => {

@@ -163,7 +163,7 @@ class HyperExpressAdapter extends http_adapter_1.AbstractHttpAdapter {
     getType() {
         //for compatibillity
         // console.log('hyper-express');
-        return 'express';
+        return 'hyper-express';
     }
     applyVersionFilter(handler, version, versioningOptions) {
         const callNextHandler = (req, res, next) => {
