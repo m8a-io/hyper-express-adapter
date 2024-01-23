@@ -120,3 +120,9 @@ TODOS:
   - [ ] - ws-path.gateway.ts
   - [ ] - ws-path2.gateway.ts
    
+
+   ## Usage 
+
+   Currently, this adapter is not published to npm. To use it, you will need to clone this repo and build it locally. 
+
+   
