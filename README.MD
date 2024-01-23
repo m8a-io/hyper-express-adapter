@@ -100,8 +100,8 @@ rushx start # or start:dev
   - [X] - middleware-run-match-route.ts
   - [X] - middleware-with-versioning.spec.ts
   - [X] - include-middleware.spec.ts
-  - [ ] - router-module-middleware.spec.ts
-  - [ ] - router-module.spec.ts
+  - [X] - router-module-middleware.spec.ts
+  - [X] - router-module.spec.ts
   - [ ] - hyper-express-get-url.spec.ts
   - [ ] - global-prefix.spec.ts
   - [ ] - hyper-express.spec.ts

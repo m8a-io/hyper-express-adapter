@@ -1,15 +1,13 @@
-//TODO: rewrite test for hyper-express, if needed
-import {
-  Controller,
-  Get,
-  INestApplication,
-  MiddlewareConsumer,
-  Module,
-} from '@nestjs/common';
+import { Controller, Get, MiddlewareConsumer, Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { appInit } from '../../utils/app-init';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { spec } from 'pactum';
 
 const RETURN_VALUE = 'test';
 const SCOPED_VALUE = 'test_scoped';
@@ -40,7 +38,7 @@ class TestModule {
 }
 
 describe('RouterModule with Middleware functions', () => {
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
   beforeEach(async () => {
     app = (
@@ -55,21 +53,23 @@ describe('RouterModule with Middleware functions', () => {
           ]),
         ],
       }).compile()
-    ).createNestApplication();
+    ).createNestApplication(new HyperExpressAdapter());
 
-    await app.init();
+    await appInit(app);
   });
 
   it(`forRoutes(TestController) - /test`, () => {
-    return request(app.getHttpServer())
+    return spec()
       .get('/module-path/test')
-      .expect(200, SCOPED_VALUE);
+      .expectStatus(200)
+      .expectBody(SCOPED_VALUE);
   });
 
   it(`forRoutes(TestController) - /test2`, () => {
-    return request(app.getHttpServer())
+    return spec()
       .get('/module-path/test2')
-      .expect(200, SCOPED_VALUE);
+      .expectStatus(200)
+      .expectBody(SCOPED_VALUE);
   });
 
   afterEach(async () => {

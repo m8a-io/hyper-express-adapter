@@ -1,11 +1,13 @@
-//TODO: rewrite test for hyper-express, if needed
-import { Controller, Get, INestApplication, Module } from '@nestjs/common';
+import { NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import { Controller, Get, Module } from '@nestjs/common';
 import { RouterModule, Routes } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
+import { HyperExpressAdapter } from '../../../../../libs/platform-hyper-express/adapters/hyper-express-adapter';
+import { appInit } from '../../utils/app-init';
+import { spec } from 'pactum';
 
 describe('RouterModule', () => {
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
   abstract class BaseController {
     @Get()
@@ -16,12 +18,13 @@ describe('RouterModule', () => {
 
   @Controller('/parent-controller')
   class ParentController extends BaseController {}
+
   @Controller('/child-controller')
   class ChildController extends BaseController {}
+
   @Controller('no-slash-controller')
   class NoSlashController extends BaseController {}
 
-  class UnknownController {}
   @Module({ controllers: [ParentController] })
   class ParentModule {}
 
@@ -30,6 +33,7 @@ describe('RouterModule', () => {
 
   @Module({})
   class AuthModule {}
+
   @Module({})
   class PaymentsModule {}
 
@@ -67,31 +71,37 @@ describe('RouterModule', () => {
   })
   class AppModule {}
 
-  before(async () => {
+  beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [MainModule, AppModule],
     }).compile();
 
-    app = moduleRef.createNestApplication();
-    await app.init();
+    app = moduleRef.createNestApplication<NestHyperExpressApplication>(
+      new HyperExpressAdapter(),
+    );
+
+    await appInit(app);
   });
 
   it('should hit the "ParentController"', async () => {
-    return request(app.getHttpServer())
+    await spec()
       .get('/parent/parent-controller')
-      .expect(200, 'ParentController');
+      .expectStatus(200)
+      .expectBody('ParentController');
   });
 
   it('should hit the "ChildController"', async () => {
-    return request(app.getHttpServer())
+    await spec()
       .get('/parent/child/child-controller')
-      .expect(200, 'ChildController');
+      .expectStatus(200)
+      .expectBody('ChildController');
   });
 
   it('should hit the "NoSlashController"', async () => {
-    return request(app.getHttpServer())
+    return await spec()
       .get('/v1/no-slash-controller')
-      .expect(200, 'NoSlashController');
+      .expectStatus(200)
+      .expectBody('NoSlashController');
   });
 
   afterEach(async () => {
