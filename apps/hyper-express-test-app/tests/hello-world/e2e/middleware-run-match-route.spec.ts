@@ -8,7 +8,10 @@ import {
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { appInit } from '../../utils/app-init';
-import { NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
 import { spec } from 'pactum';
 
 /**
@@ -56,18 +59,18 @@ describe('Middleware (run on route match)', () => {
       await Test.createTestingModule({
         imports: [TestModule],
       }).compile()
-    ).createNestApplication();
+    ).createNestApplication(new HyperExpressAdapter());
 
     await appInit(app);
   });
 
   it(`forRoutes(TestController) should execute middleware once when request url is equal match`, async () => {
-    return spec()
+    return await spec()
       .get('/test')
       .expectStatus(200)
       .toss()
-      .then(() => {
-        expect(triggerCounter).toBe(1);
+      .then((res) => {
+        expect(res.triggerCounter).toBe(1);
       });
   });
 

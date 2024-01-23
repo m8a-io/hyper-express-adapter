@@ -1,7 +1,11 @@
-import { NestHyperExpressApplication } from '@m8a/platform-hyper-express';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { appInit } from '../../utils/app-init';
+import { spec } from 'pactum';
 
 describe('Hyper-Express Cors', () => {
   let app: NestHyperExpressApplication;
@@ -30,7 +34,9 @@ describe('Hyper-Express Cors', () => {
           imports: [AppModule],
         }).compile();
 
-        app = module.createNestApplication<NestHyperExpressApplication>();
+        app = module.createNestApplication<NestHyperExpressApplication>(
+          new HyperExpressAdapter(),
+        );
 
         let requestId = 0;
         const configDelegation = function (req, cb) {
@@ -40,30 +46,30 @@ describe('Hyper-Express Cors', () => {
         };
         app.enableCors(configDelegation);
 
-        await app.init();
+        await appInit(app);
       });
 
       it(`should add cors headers based on the first config`, async () => {
-        return request(app.getHttpServer())
+        return spec()
           .get('/')
-          .expect('access-control-allow-origin', 'example.com')
-          .expect('vary', 'Origin')
-          .expect('access-control-allow-credentials', 'true')
-          .expect('access-control-expose-headers', 'foo,bar')
-          .expect('content-length', '0');
+          .expectHeader('access-control-allow-origin', 'example.com')
+          .expectHeader('vary', 'Origin')
+          .expectHeader('access-control-allow-credentials', 'true')
+          .expectHeader('access-control-expose-headers', 'foo,bar')
+          .expectHeader('content-length', '0');
       });
 
       it(`should add cors headers based on the second config`, async () => {
-        return request(app.getHttpServer())
+        return spec()
           .options('/')
-          .expect('access-control-allow-origin', 'sample.com')
-          .expect('vary', 'Origin')
-          .expect('access-control-allow-credentials', 'true')
-          .expect('access-control-expose-headers', 'zoo,bar')
-          .expect('access-control-allow-methods', 'GET')
-          .expect('access-control-allow-headers', 'baz,foo')
-          .expect('access-control-max-age', '321')
-          .expect('content-length', '0');
+          .expectHeader('access-control-allow-origin', 'sample.com')
+          .expectHeader('vary', 'Origin')
+          .expectHeader('access-control-allow-credentials', 'true')
+          .expectHeader('access-control-expose-headers', 'zoo,bar')
+          .expectHeader('access-control-allow-methods', 'GET')
+          .expectHeader('access-control-allow-headers', 'baz,foo')
+          .expectHeader('access-control-max-age', '321')
+          .expectHeader('content-length', '0');
       });
 
       afterAll(async () => {
@@ -84,34 +90,37 @@ describe('Hyper-Express Cors', () => {
           cb(null, config);
         };
 
-        app = module.createNestApplication<NestHyperExpressApplication>({
-          cors: configDelegation,
-        });
+        app = module.createNestApplication<NestHyperExpressApplication>(
+          new HyperExpressAdapter(),
+          {
+            cors: configDelegation,
+          },
+        );
 
-        await app.init();
+        await appInit(app);
       });
 
       it(`should add cors headers based on the first config`, async () => {
-        return request(app.getHttpServer())
+        return spec()
           .get('/')
-          .expect('access-control-allow-origin', 'example.com')
-          .expect('vary', 'Origin')
-          .expect('access-control-allow-credentials', 'true')
-          .expect('access-control-expose-headers', 'foo,bar')
-          .expect('content-length', '0');
+          .expectHeader('access-control-allow-origin', 'example.com')
+          .expectHeader('vary', 'Origin')
+          .expectHeader('access-control-allow-credentials', 'true')
+          .expectHeader('access-control-expose-headers', 'foo,bar')
+          .expectHeader('content-length', '0');
       });
 
       it(`should add cors headers based on the second config`, async () => {
-        return request(app.getHttpServer())
+        return spec()
           .options('/')
-          .expect('access-control-allow-origin', 'sample.com')
-          .expect('vary', 'Origin')
-          .expect('access-control-allow-credentials', 'true')
-          .expect('access-control-expose-headers', 'zoo,bar')
-          .expect('access-control-allow-methods', 'GET')
-          .expect('access-control-allow-headers', 'baz,foo')
-          .expect('access-control-max-age', '321')
-          .expect('content-length', '0');
+          .expectHeader('access-control-allow-origin', 'sample.com')
+          .expectHeader('vary', 'Origin')
+          .expectHeader('access-control-allow-credentials', 'true')
+          .expectHeader('access-control-expose-headers', 'zoo,bar')
+          .expectHeader('access-control-allow-methods', 'GET')
+          .expectHeader('access-control-allow-headers', 'baz,foo')
+          .expectHeader('access-control-max-age', '321')
+          .expectHeader('content-length', '0');
       });
 
       afterAll(async () => {
@@ -126,20 +135,22 @@ describe('Hyper-Express Cors', () => {
           imports: [AppModule],
         }).compile();
 
-        app = module.createNestApplication<NestHyperExpressApplication>();
+        app = module.createNestApplication<NestHyperExpressApplication>(
+          new HyperExpressAdapter(),
+        );
         app.enableCors(configs[0]);
 
-        await app.init();
+        await appInit(app);
       });
 
       it(`CORS headers`, async () => {
-        return request(app.getHttpServer())
+        return spec()
           .get('/')
-          .expect('access-control-allow-origin', 'example.com')
-          .expect('vary', 'Origin')
-          .expect('access-control-allow-credentials', 'true')
-          .expect('access-control-expose-headers', 'foo,bar')
-          .expect('content-length', '0');
+          .expectHeader('access-control-allow-origin', 'example.com')
+          .expectHeader('vary', 'Origin')
+          .expectHeader('access-control-allow-credentials', 'true')
+          .expectHeader('access-control-expose-headers', 'foo,bar')
+          .expectHeader('content-length', '0');
       });
     });
 
@@ -153,20 +164,23 @@ describe('Hyper-Express Cors', () => {
           imports: [AppModule],
         }).compile();
 
-        app = module.createNestApplication<NestHyperExpressApplication>({
-          cors: configs[0],
-        });
-        await app.init();
+        app = module.createNestApplication<NestHyperExpressApplication>(
+          new HyperExpressAdapter(),
+          {
+            cors: configs[0],
+          },
+        );
+        await appInit(app);
       });
 
       it(`CORS headers`, async () => {
-        return request(app.getHttpServer())
+        return spec()
           .get('/')
-          .expect('access-control-allow-origin', 'example.com')
-          .expect('vary', 'Origin')
-          .expect('access-control-allow-credentials', 'true')
-          .expect('access-control-expose-headers', 'foo,bar')
-          .expect('content-length', '0');
+          .expectHeader('access-control-allow-origin', 'example.com')
+          .expectHeader('vary', 'Origin')
+          .expectHeader('access-control-allow-credentials', 'true')
+          .expectHeader('access-control-expose-headers', 'foo,bar')
+          .expectHeader('content-length', '0');
       });
 
       afterAll(async () => {

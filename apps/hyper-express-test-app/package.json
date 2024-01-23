@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:integrations": "jest --config ./tests/jest-config.json",
-    "test:integrations:watch": "jest --config ./tests/jest-config.json --watch"
+    "test:integrations:watch": "jest --config ./tests/jest-config.json --watchAll"
   },
   "dependencies": {
     "@m8a/platform-hyper-express": "workspace:*",
