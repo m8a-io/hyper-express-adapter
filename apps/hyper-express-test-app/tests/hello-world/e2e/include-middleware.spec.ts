@@ -1,14 +1,12 @@
-//TODO: rewrite test for hyper-express, if needed
-import {
-  Controller,
-  Get,
-  INestApplication,
-  MiddlewareConsumer,
-  Module,
-} from '@nestjs/common';
+import { Controller, Get, MiddlewareConsumer, Module } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { spec } from 'pactum';
+import { appInit } from '../../utils/app-init';
 
 const RETURN_VALUE = 'test';
 const SCOPED_VALUE = 'test_scoped';
@@ -52,59 +50,58 @@ class TestModule {
 }
 
 describe('Middleware', () => {
-  let app: INestApplication;
+  let app: NestHyperExpressApplication;
 
-  it(`forRoutes(*)`, async () => {
+  it(`forRoutes special`, async () => {
     app = await createApp();
-    await request(app.getHttpServer()).get('/hello').expect(200, RETURN_VALUE);
-    await request(app.getHttpServer())
-      .get('/exclude')
-      .expect(200, EXCLUDE_VALUE);
+    await spec().get('/hello').expectStatus(200).expectBody(RETURN_VALUE);
+    await spec().get('/exclude').expectStatus(200).expectBody(EXCLUDE_VALUE);
+    await app.close();
   });
 
   it(`forRoutes(*) with global prefix`, async () => {
-    app = await createApp(app => app.setGlobalPrefix('api'));
-    await request(app.getHttpServer())
-      .get('/api/hello')
-      .expect(200, RETURN_VALUE);
-    await request(app.getHttpServer())
-      .get('/api/exclude')
-      .expect(200, EXCLUDE_VALUE);
+    app = await createApp((app) => app.setGlobalPrefix('api'));
+    await spec().get('/api/hello').expectStatus(200).expectBody(RETURN_VALUE);
+    spec().get('/api/exclude').expectStatus(200).expectBody(EXCLUDE_VALUE);
+    await app.close();
   });
 
   it(`forRoutes(TestController)`, async () => {
     app = await createApp();
-    await request(app.getHttpServer()).get('/test').expect(200, SCOPED_VALUE);
-    await request(app.getHttpServer())
-      .get('/exclude')
-      .expect(200, EXCLUDE_VALUE);
+    await spec().get('/test').expectStatus(200).expectBody(SCOPED_VALUE);
+    await spec().get('/exclude').expectStatus(200).expectBody(EXCLUDE_VALUE);
+    await app.close();
   });
 
   it(`forRoutes(tests/*)`, async () => {
     app = await createApp();
-    return request(app.getHttpServer())
+    await spec()
       .get('/tests/wildcard')
-      .expect(200, WILDCARD_VALUE);
-  });
-
-  afterEach(async () => {
+      .expectStatus(200)
+      .expectBody(WILDCARD_VALUE);
     await app.close();
   });
+
+  // afterEach(async () => {
+  //   await app.close();
+  // });
 });
 
 async function createApp(
-  beforeInit?: (app: INestApplication) => void,
-): Promise<INestApplication> {
+  beforeInit?: (app: NestHyperExpressApplication) => void,
+): Promise<NestHyperExpressApplication> {
   const app = (
     await Test.createTestingModule({
       imports: [TestModule],
     }).compile()
-  ).createNestApplication();
+  ).createNestApplication<NestHyperExpressApplication>(
+    new HyperExpressAdapter(),
+  );
 
   if (beforeInit) {
     beforeInit(app);
   }
-  await app.init();
+  await appInit(app);
 
   return app;
 }

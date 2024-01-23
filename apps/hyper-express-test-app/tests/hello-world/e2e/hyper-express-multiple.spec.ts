@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
-import { request, spec } from 'pactum';
+import { spec } from 'pactum';
 import {
   HyperExpressAdapter,
   NestHyperExpressApplication,
