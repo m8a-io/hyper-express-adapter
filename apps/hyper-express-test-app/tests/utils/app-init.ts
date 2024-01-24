@@ -5,7 +5,7 @@ export async function appInit(
   app: NestHyperExpressApplication,
   port: number = 9999,
   host?: string,
-  callback?: () => void,
+  callback: () => void = () => {},
 ) {
   // console.log('we are calling app to listen', port);
   await app.listen(port, host, callback);

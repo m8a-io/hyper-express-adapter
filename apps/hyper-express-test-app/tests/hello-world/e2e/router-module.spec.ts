@@ -2,7 +2,7 @@ import { NestHyperExpressApplication } from '@m8a/platform-hyper-express';
 import { Controller, Get, Module } from '@nestjs/common';
 import { RouterModule, Routes } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
-import { HyperExpressAdapter } from '../../../../../libs/platform-hyper-express/adapters/hyper-express-adapter';
+import { HyperExpressAdapter } from '@m8a/platform-hyper-express/src/adapters/hyper-express-adapter';
 import { appInit } from '../../utils/app-init';
 import { spec } from 'pactum';
 

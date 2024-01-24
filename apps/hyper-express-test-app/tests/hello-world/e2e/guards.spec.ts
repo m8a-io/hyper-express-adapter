@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { Test } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import {
   HyperExpressAdapter,
@@ -19,8 +19,8 @@ export class AuthGuard {
   }
 }
 
-function createTestModule(guard) {
-  return Test.createTestingModule({
+async function createTestModule(guard): Promise<TestingModule> {
+  return await Test.createTestingModule({
     imports: [AppModule],
     providers: [
       {
@@ -35,7 +35,8 @@ describe('Guards', () => {
   let app: NestHyperExpressApplication;
 
   it(`should prevent access (unauthorized)`, async () => {
-    app = (await createTestModule(new AuthGuard())).createNestApplication(
+    const testModule = await createTestModule(new AuthGuard())
+    app = testModule.createNestApplication(
       new HyperExpressAdapter(),
     );
     await appInit(app);

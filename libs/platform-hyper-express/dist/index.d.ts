@@ -1,2 +1,2 @@
-export * from './adapters';
-export * from './interfaces';
+export * from './src/adapters';
+export * from './src/interfaces';
