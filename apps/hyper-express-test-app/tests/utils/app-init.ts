@@ -7,7 +7,9 @@ export async function appInit(
   host?: string,
   callback?: () => void,
 ) {
+  // console.log('we are calling app to listen', port);
   await app.listen(port, host, callback);
+  // console.log('app is listening');
   const url = await app.getUrl();
   request.setBaseUrl(
     url.replace('::1', '127.0.0.1').replace('+unix', '').replace('%3A', ':'),

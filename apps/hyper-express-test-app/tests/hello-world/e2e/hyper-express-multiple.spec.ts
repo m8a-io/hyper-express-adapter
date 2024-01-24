@@ -8,7 +8,8 @@ import {
 import { appInit } from '../../utils/app-init';
 
 describe('Hello world (hyper express instance with multiple applications)', () => {
-  let apps: NestHyperExpressApplication[];
+  let app1: NestHyperExpressApplication;
+  let app2: NestHyperExpressApplication;
   process.setMaxListeners(12);
 
   beforeEach(async () => {
@@ -19,25 +20,27 @@ describe('Hello world (hyper express instance with multiple applications)', () =
       imports: [AppModule],
     }).compile();
 
-    apps = [
-      module1.createNestApplication<NestHyperExpressApplication>(
-        new HyperExpressAdapter(),
-      ),
-
-      module2
-        .createNestApplication<NestHyperExpressApplication>(
-          new HyperExpressAdapter(),
-        )
-        .setGlobalPrefix('/app2'),
-    ];
-
-    apps.map(async (app, index) => {
-      await appInit(app, 9998 + index);
-    });
+    app1 = module1.createNestApplication<NestHyperExpressApplication>(
+      new HyperExpressAdapter(),
+    );
+    app2 = module2.createNestApplication<NestHyperExpressApplication>(
+      new HyperExpressAdapter(),
+    );
+    app2.setGlobalPrefix('/app2');
+    appInit(app1);
+    appInit(app2);
+    // apps.map(async (app, index) => {
+    //   appInit(app, 9998 + index);
+    // });
   });
 
-  it(`/GET`, () => {
-    return spec().get('/hello').expectStatus(200).expectBody('Hello world!');
+  it(`/GET`, async () => {
+    const _spec = await spec().get('/hello');
+    console.log('_spec', _spec);
+    return await spec()
+      .get('/hello')
+      .expectStatus(200)
+      .expectBody('Hello world!');
   });
 
   it(`/GET (app2)`, () => {
@@ -76,8 +79,10 @@ describe('Hello world (hyper express instance with multiple applications)', () =
   });
 
   afterEach(async () => {
-    apps.map(async (app) => {
-      await app.close();
-    });
+    // apps.map(async (app) => {
+    //   await app.close();
+    // });
+    await app1.close();
+    await app2.close();
   });
 });

@@ -6,7 +6,7 @@ import {
   HyperExpressAdapter,
   NestHyperExpressApplication,
 } from '@m8a/platform-hyper-express';
-import { request, spec } from 'pactum';
+import { spec } from 'pactum';
 import { appInit } from '../../utils/app-init';
 
 @Injectable()
