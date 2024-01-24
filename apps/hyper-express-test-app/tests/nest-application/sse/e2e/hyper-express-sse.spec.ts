@@ -1,11 +1,13 @@
-import { NestExpressApplication } from '@nestjs/platform-express';
 import { Test } from '@nestjs/testing';
-import { expect } from 'chai';
 import * as EventSource from 'eventsource';
 import { AppModule } from '../src/app.module';
-
+import {
+  HyperExpressAdapter,
+  NestHyperExpressApplication,
+} from '@m8a/platform-hyper-express';
+import { appInit } from '../../../utils/app-init';
 describe('Sse (Express Application)', () => {
-  let app: NestExpressApplication;
+  let app: NestHyperExpressApplication;
   let eventSource: EventSource;
 
   describe('without forceCloseConnections', () => {
@@ -14,11 +16,18 @@ describe('Sse (Express Application)', () => {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication<NestExpressApplication>();
+      app = moduleFixture.createNestApplication<NestHyperExpressApplication>(
+        new HyperExpressAdapter(),
+      );
 
       await app.listen(3000);
-      const url = await app.getUrl();
-
+      let url = await app.getUrl();
+      console.log('url: ', url);
+      url = url
+        .replace('0.0.0.0', '127.0.0.1')
+        .replace('+unix', '')
+        .replace('%3A', ':');
+      console.log('url: ', url);
       eventSource = new EventSource(url + '/sse', {
         headers: { connection: 'keep-alive' },
       });
@@ -33,9 +42,9 @@ describe('Sse (Express Application)', () => {
       await app.close();
     });
 
-    it('receives events from server', done => {
-      eventSource.addEventListener('message', event => {
-        expect(JSON.parse(event.data)).to.eql({
+    it('receives events from server', (done) => {
+      eventSource.addEventListener('message', (event) => {
+        expect(JSON.parse(event.data)).toEqual({
           hello: 'world',
         });
         done();
@@ -49,12 +58,20 @@ describe('Sse (Express Application)', () => {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication<NestExpressApplication>({
-        forceCloseConnections: true,
-      });
+      app = moduleFixture.createNestApplication<NestHyperExpressApplication>(
+        new HyperExpressAdapter(),
+        {
+          forceCloseConnections: true,
+        },
+      );
 
-      await app.listen(3000);
-      const url = await app.getUrl();
+      await appInit(app);
+
+      let url = await app.getUrl();
+      url = url
+        .replace('0.0.0.0', '127.0.0.1')
+        .replace('+unix', '')
+        .replace('%3A', ':');
 
       eventSource = new EventSource(url + '/sse', {
         headers: { connection: 'keep-alive' },
@@ -67,9 +84,9 @@ describe('Sse (Express Application)', () => {
       eventSource.close();
     });
 
-    it('receives events from server', done => {
-      eventSource.addEventListener('message', event => {
-        expect(JSON.parse(event.data)).to.eql({
+    it('receives events from server', (done) => {
+      eventSource.addEventListener('message', (event) => {
+        expect(JSON.parse(event.data)).toEqual({
           hello: 'world',
         });
         done();

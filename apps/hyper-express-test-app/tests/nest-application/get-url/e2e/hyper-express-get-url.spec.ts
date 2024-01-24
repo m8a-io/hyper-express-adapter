@@ -7,7 +7,7 @@ import {
   NestHyperExpressApplication,
 } from '@m8a/platform-hyper-express';
 
-describe('Get URL (Express Application)', () => {
+describe('Get URL (Hyper Express Application)', () => {
   let testModule: TestingModule;
   let port: number;
   let app: NestHyperExpressApplication;

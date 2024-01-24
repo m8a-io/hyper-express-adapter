@@ -1,10 +1,7 @@
-//TODO: rewrite test for hyper-express, if needed
-import { ExpressAdapter } from '@nestjs/platform-express';
 import { Test, TestingModule } from '@nestjs/testing';
-import { expect } from 'chai';
-import * as express from 'express';
 import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
+import { HyperExpressAdapter } from '@m8a/platform-hyper-express';
 
 describe('Listen (Express Application)', () => {
   let testModule: TestingModule;
@@ -14,7 +11,7 @@ describe('Listen (Express Application)', () => {
     testModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
-    app = testModule.createNestApplication(new ExpressAdapter(express()));
+    app = testModule.createNestApplication(new HyperExpressAdapter());
   });
 
   afterEach(async () => {
@@ -22,27 +19,27 @@ describe('Listen (Express Application)', () => {
   });
 
   it('should resolve with httpServer on success', async () => {
-    const response = await app.listen(3000);
-    expect(response).to.eql(app.getHttpServer());
+    const response = await app.listen(9999);
+    expect(response).toEqual(app.getHttpServer());
   });
 
   it('should reject if the port is not available', async () => {
-    await app.listen(3000);
+    await app.listen(9999);
     const secondApp = testModule.createNestApplication(
-      new ExpressAdapter(express()),
+      new HyperExpressAdapter(),
     );
     try {
-      await secondApp.listen(3000);
+      await secondApp.listen(9999);
     } catch (error) {
-      expect(error.code).to.equal('EADDRINUSE');
+      expect(error.code).toEqual('EADDRINUSE');
     }
   });
 
   it('should reject if there is an invalid host', async () => {
     try {
-      await app.listen(3000, '1');
+      await app.listen(9999, '1');
     } catch (error) {
-      expect(error.code).to.equal('EADDRNOTAVAIL');
+      expect(error.code).toEqual('EADDRNOTAVAIL');
     }
   });
 });

@@ -13,12 +13,12 @@ export class AppService {
 
   getReadStream(): StreamableFile {
     return new StreamableFile(
-      createReadStream(join(process.cwd(), 'Readme.md')),
+      createReadStream(join(process.cwd(), 'README.md')),
     );
   }
 
   getBuffer(): StreamableFile {
-    return new StreamableFile(readFileSync(join(process.cwd(), 'Readme.md')));
+    return new StreamableFile(readFileSync(join(process.cwd(), 'README.md')));
   }
 
   getNonFile(): NonFile {
@@ -30,12 +30,12 @@ export class AppService {
   }
 
   getFileWithHeaders(): StreamableFile {
-    const file = readFileSync(join(process.cwd(), 'Readme.md'));
+    const file = readFileSync(join(process.cwd(), 'README.md'));
     return new StreamableFile(
-      createReadStream(join(process.cwd(), 'Readme.md')),
+      createReadStream(join(process.cwd(), 'README.md')),
       {
         type: 'text/markdown',
-        disposition: 'attachment; filename="Readme.md"',
+        disposition: 'attachment; filename="README.md"',
         length: file.byteLength,
       },
     );
