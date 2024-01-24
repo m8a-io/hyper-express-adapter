@@ -102,14 +102,13 @@ rushx start # or start:dev
   - [X] - include-middleware.spec.ts
   - [X] - router-module-middleware.spec.ts
   - [X] - router-module.spec.ts
-  - [ ] - hyper-express-get-url.spec.ts
-  - [ ] - global-prefix.spec.ts
-  - [ ] - hyper-express.spec.ts
-  - [ ] - fastify.spec.ts
-  - [ ] - error-gateway.spec.ts
-  - [ ] - gateway-ack.spec.ts
-  - [ ] - gateway.spec.ts
-  - [ ] - ws-gateway.spec.ts
+  - [X] - hyper-express-get-url.spec.ts
+  - [X] - global-prefix.spec.ts
+  - [X] - hyper-express.spec.ts
+  - [X] - error-gateway.spec.ts
+  - [X] - gateway-ack.spec.ts
+  - [X] - gateway.spec.ts
+  - [X] - ws-gateway.spec.ts
   - [ ] - ack.gateway.ts
   - [ ] - app.gateway.ts
   - [ ] - core.gateway.ts
