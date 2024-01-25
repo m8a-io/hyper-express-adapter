@@ -101,24 +101,42 @@ Then, run:
 rushx start # or start:dev
 ``` 
 
-##TODOS:
+## Websocket Test Status
 
-└─ hyper-express-adapter open tests and work 
-
-  - [X] - middleware-class.spec.ts
-  - [X] - middleware-execute-order.spec.ts
-  - [X] - middleware-run-match-route.ts
-  - [X] - middleware-with-versioning.spec.ts
-  - [X] - include-middleware.spec.ts
-  - [X] - router-module-middleware.spec.ts
-  - [X] - router-module.spec.ts
-  - [X] - hyper-express-get-url.spec.ts
-  - [X] - global-prefix.spec.ts
-  - [X] - hyper-express.spec.ts
+  Websocket tests (Needs adapter work and possible test rewrite)
+   [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/10)
   - [ ] - error-gateway.spec.ts
   - [ ] - gateway-ack.spec.ts
   - [ ] - gateway.spec.ts
   - [ ] - ws-gateway.spec.ts
+
+## HTTP Test Status
+
+ - [ ] - cors - all tests FAIL
+ - [X] - hello-world/exceptions - all tests pass
+ - [ ] - hello-world/exclude-middleware-hyper-express - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/9)
+ - [X] - hello-world/guards - all tests pass
+ - [X] - hello-world/hello-world-base - all tests pass
+ - [ ] - hello-world/hyper-express-instance - 1 of 4 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/11)
+ - [ ] - hello-world/hyper-express-multiple - 5 of 6 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/12)
+ - [ ] - hello-world/include-middleware - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/13)
+ - [X] - hello-world/interceptors - all tests pass
+ - [ ] - hello-world/local-pipes - 1 of 3 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/14)
+ - [ ] - hello-world/middleware - 1 of 3 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/15)
+ - [ ] - hello-world/middleware-class - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/16)
+ - [X] - hello-world/middleware-execute-order - all tests pass
+ - [ ] - hello-world/middleware-run-match-route - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/17)
+ - [ ] - hello-world/middleware-with-versioning - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/18)
+ - [ ] - hello-world/router-module-middleware - 2 of 3 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/19)
+ - [X] - hello-world/router-module - all tests pass
+ - [X] - nest-application/app-locals - all tests pass
+ - [ ] - nest-application/get-url - suite FAILS [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/20)
+ - [ ] - nest-application/global-prefix - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/21)
+ - [ ] - nest-application/listen - 1 of 3 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/22)
+ - [ ] - nest-application/raw-body - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/23)
+ - [ ] - nest-application/sse - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/24)
+ - [ ] - nest-application/use-body-parser - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/25)
+ - [ ] - nest-application/send-files - 2 of 6 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/26)
 
 
    ## Usage 
