@@ -1,4 +1,3 @@
-
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
@@ -139,8 +138,8 @@ rushx start # or start:dev
  - [ ] - nest-application/send-files - 2 of 6 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/26)
 
 
-   ## Usage 
+## Usage 
 
-   Currently, this adapter is not published to npm. To use it, you will need to clone this repo and build it locally. 
+Currently, this adapter is not published to npm. To use it, you will need to clone this repo and build it locally. 
 
    
