@@ -406,6 +406,14 @@
       ]
     },
     {
+      "packageName": "@m8a/platform-hyper-express-ws",
+      "projectFolder": "libs/platform-hyper-express-ws",
+      "reviewCategory": "libs",
+      "tags": [
+        "libs"
+      ]
+    },
+    {
       "packageName": "hyper-express-test-app",
       "projectFolder": "apps/hyper-express-test-app",
       "reviewCategory": "apps",

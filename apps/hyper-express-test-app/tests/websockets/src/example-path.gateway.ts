@@ -1,15 +1,14 @@
-// TODO: need to use hyper-express ws
-// import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 
-// @WebSocketGateway({
-//   path: '/example',
-// })
-// export class ExamplePathGateway {
-//   @SubscribeMessage('push')
-//   onPush(client, data) {
-//     return {
-//       event: 'pop',
-//       data,
-//     };
-//   }
-// }
+@WebSocketGateway({
+  path: '/example',
+})
+export class ExamplePathGateway {
+  @SubscribeMessage('push')
+  onPush(client, data) {
+    return {
+      event: 'pop',
+      data,
+    };
+  }
+}

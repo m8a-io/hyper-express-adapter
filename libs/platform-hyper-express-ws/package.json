@@ -1,0 +1,36 @@
+{
+  "name": "@m8a/platform-hyper-express-ws",
+  "version": "0.0.1",
+  "description": "Nest - modern, fast, powerful node.js web framework (@platform-ws)",
+  "author": "Scott Molinari",
+  "license": "MIT",
+  "homepage": "https://nestjs.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nestjs/nest.git",
+    "directory": "packages/platform-ws"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "nest build",
+    "build:watch": "nest build --watch"
+  },
+  "dependencies": {
+    "tslib": "2.6.2",
+    "ws": "8.16.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "10.3.1",
+    "reflect-metadata": "0.2.1",
+    "rxjs": "7.8.1",
+    "@nestjs/websockets": "10.3.1"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/websockets": "^10.0.0",
+    "rxjs": "^7.1.0"
+  }
+}
