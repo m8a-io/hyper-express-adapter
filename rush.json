@@ -414,6 +414,14 @@
       ]
     },
     {
+      "packageName": "hyper-express",
+      "projectFolder": "libs/hyper-express",
+      "reviewCategory": "libs",
+      "tags": [
+        "libs"
+      ]
+    },
+    {
       "packageName": "hyper-express-test-app",
       "projectFolder": "apps/hyper-express-test-app",
       "reviewCategory": "apps",

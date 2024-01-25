@@ -19,10 +19,10 @@ let AppService = class AppService {
         this.MAX_BITES = Math.pow(2, 31) - 1;
     }
     getReadStream() {
-        return new common_1.StreamableFile((0, fs_1.createReadStream)((0, path_1.join)(process.cwd(), 'Readme.md')));
+        return new common_1.StreamableFile((0, fs_1.createReadStream)((0, path_1.join)(process.cwd(), 'README.md')));
     }
     getBuffer() {
-        return new common_1.StreamableFile((0, fs_1.readFileSync)((0, path_1.join)(process.cwd(), 'Readme.md')));
+        return new common_1.StreamableFile((0, fs_1.readFileSync)((0, path_1.join)(process.cwd(), 'README.md')));
     }
     getNonFile() {
         return new non_file_1.NonFile('Hello world');
@@ -31,10 +31,10 @@ let AppService = class AppService {
         return (0, rxjs_1.of)(this.getReadStream());
     }
     getFileWithHeaders() {
-        const file = (0, fs_1.readFileSync)((0, path_1.join)(process.cwd(), 'Readme.md'));
-        return new common_1.StreamableFile((0, fs_1.createReadStream)((0, path_1.join)(process.cwd(), 'Readme.md')), {
+        const file = (0, fs_1.readFileSync)((0, path_1.join)(process.cwd(), 'README.md'));
+        return new common_1.StreamableFile((0, fs_1.createReadStream)((0, path_1.join)(process.cwd(), 'README.md')), {
             type: 'text/markdown',
-            disposition: 'attachment; filename="Readme.md"',
+            disposition: 'attachment; filename="README.md"',
             length: file.byteLength,
         });
     }
