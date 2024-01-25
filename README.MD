@@ -19,6 +19,14 @@ Hyper-Express gets its speed from using [uWebSockets.js](https://github.com/uNet
 
 This project attempts to create a NestJS adapter for Hyper-Express.
 
+## What this project offers
+
+This project offers Nestjs adapters for Hyper-Express. They are currently alpha and feature incomplete.
+
+| Package | Description |
+|-@m8a/platform-hyper-express |  This is the NestJS HTTP server platform based on Hyper Express. |
+|-@m8a/hyper-express-adapter-ws | This is the NestJS adapter for Websocket connectivity based on Hyper Express.|
+
 ## Requirements
 
 You need Node 18+ installed and you need Rush installed globally to run this project.
