@@ -26,6 +26,7 @@ This project offers Nestjs adapters for Hyper-Express. They are currently alpha 
 | Package | Description |
 |-@m8a/platform-hyper-express |  This is the NestJS HTTP server platform based on Hyper Express. |
 |-@m8a/hyper-express-adapter-ws | This is the NestJS adapter for Websocket connectivity based on Hyper Express.|
+|-hyper-express | This is a submodule for the hyper-express library in case it is needed to make changes too.|
 
 ## Requirements
 
