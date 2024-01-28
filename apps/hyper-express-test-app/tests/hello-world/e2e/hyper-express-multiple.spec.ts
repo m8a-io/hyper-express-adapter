@@ -8,8 +8,7 @@ import {
 import { appInit } from '../../utils/app-init';
 
 describe('Hello world (hyper express instance with multiple applications)', () => {
-  let app1: NestHyperExpressApplication;
-  let app2: NestHyperExpressApplication;
+  let apps: NestHyperExpressApplication[];
   process.setMaxListeners(12);
 
   beforeEach(async () => {
@@ -20,69 +19,66 @@ describe('Hello world (hyper express instance with multiple applications)', () =
       imports: [AppModule],
     }).compile();
 
-    app1 = module1.createNestApplication<NestHyperExpressApplication>(
-      new HyperExpressAdapter(),
+    const adapter = new HyperExpressAdapter();
+    apps = [
+      module1.createNestApplication<NestHyperExpressApplication>(
+        new HyperExpressAdapter(),
+      ),
+      module2.createNestApplication<NestHyperExpressApplication>(
+        new HyperExpressAdapter(),
+    ).setGlobalPrefix('/app2')];
+
+    await Promise.all(apps.map(async (app, index) => {
+      appInit(app, 9998 + index);
+      })
     );
-    app2 = module2.createNestApplication<NestHyperExpressApplication>(
-      new HyperExpressAdapter(),
-    );
-    app2.setGlobalPrefix('/app2');
-    appInit(app1);
-    appInit(app2);
-    // apps.map(async (app, index) => {
-    //   appInit(app, 9998 + index);
-    // });
   });
 
-  it(`/GET`, async () => {
-    const _spec = await spec().get('/hello');
-    console.log('_spec', _spec);
+  it(`/GET test1`, async () => {
     return await spec()
-      .get('/hello')
+      .get('http:127.0.0.1:9998/hello')
       .expectStatus(200)
       .expectBody('Hello world!');
   });
 
-  it(`/GET (app2)`, () => {
-    return spec()
-      .get('/app2/hello')
+  it(`/GET (app2)`, async () => {
+    return await spec()
+      .get('http://127.0.0.1:9999/app2/hello')
       .expectStatus(200)
       .expectBody('Hello world!');
   });
 
-  it(`/GET (Promise/async)`, () => {
-    return spec()
-      .get('/hello/async')
+  it(`/GET (Promise/async)`, async () => {
+    return await spec()
+      .get('http://127.0.0.1:9998/hello/async')
       .expectStatus(200)
       .expectBody('Hello world!');
   });
 
-  it(`/GET (app2 Promise/async)`, () => {
-    return spec()
-      .get('/app2/hello/async')
+  it(`/GET (app2 Promise/async)`, async () => {
+    return await spec()
+      .get('http://127.0.0.1:9999/app2/hello/async')
       .expectStatus(200)
       .expectBody('Hello world!');
   });
 
-  it(`/GET (Observable stream)`, () => {
-    return spec()
-      .get('/hello/stream')
+  it(`/GET (Observable stream)`, async () => {
+    return await spec()
+      .get('http://127.0.0.1:9998/hello/stream')
       .expectStatus(200)
       .expectBody('Hello world!');
   });
 
-  it(`/GET (app2 Observable stream)`, () => {
-    return spec()
-      .get('/app2/hello/stream')
+  it(`/GET (app2 Observable stream)`, async () => {
+    return await spec()
+      .get('http://127.0.0.1:9999/app2/hello/stream')
       .expectStatus(200)
       .expectBody('Hello world!');
   });
 
   afterEach(async () => {
-    // apps.map(async (app) => {
-    //   await app.close();
-    // });
-    await app1.close();
-    await app2.close();
+    apps.map(async (app) => {
+      await app.close();
+    });
   });
 });
