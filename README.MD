@@ -111,13 +111,13 @@ rushx start # or start:dev
 
 ## HTTP Test Status
 
- - [ ] - cors - all tests FAIL
+ - [X] - cors - all tests pass
  - [X] - hello-world/exceptions - all tests pass
  - [ ] - hello-world/exclude-middleware-hyper-express - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/9)
  - [X] - hello-world/guards - all tests pass
  - [X] - hello-world/hello-world-base - all tests pass
  - [ ] - hello-world/hyper-express-instance - 1 of 4 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/11)
- - [ ] - hello-world/hyper-express-multiple - 5 of 6 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/12)
+ - [X] - hello-world/hyper-express-multiple - all tests pass
  - [ ] - hello-world/include-middleware - all tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/13)
  - [X] - hello-world/interceptors - all tests pass
  - [ ] - hello-world/local-pipes - 1 of 3 tests FAIL [Issue](https://github.com/m8a-io/hyper-express-adapter/issues/14)
