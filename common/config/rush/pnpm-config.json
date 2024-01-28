@@ -70,7 +70,7 @@
    * The default value is false to avoid legacy compatibility issues.
    * It is strongly recommended to set `strictPeerDependencies=true`.
    */
-  // "strictPeerDependencies": true,
+  "strictPeerDependencies": true,
   /**
    * Environment variables that will be provided to PNPM.
    */
@@ -110,7 +110,7 @@
    *
    * The default value is false.
    */
-  // "preventManualShrinkwrapChanges": true,
+  "preventManualShrinkwrapChanges": true,
   /**
    * The "globalOverrides" setting provides a simple mechanism for overriding version selections
    * for all dependencies of all projects in the monorepo workspace.  The settings are copied

@@ -6,6 +6,8 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { appInit } from '../../utils/app-init';
 import { spec } from 'pactum';
+import * as cors from 'cors';
+import { config } from 'process';
 
 describe('Hyper-Express Cors', () => {
   let app: NestHyperExpressApplication;
@@ -31,11 +33,11 @@ describe('Hyper-Express Cors', () => {
     describe('enableCors', () => {
       beforeAll(async () => {
         const module = await Test.createTestingModule({
-          imports: [AppModule],
+          imports: [AppModule] 
         }).compile();
 
         app = module.createNestApplication<NestHyperExpressApplication>(
-          new HyperExpressAdapter(),
+          new HyperExpressAdapter()
         );
 
         let requestId = 0;
@@ -49,7 +51,7 @@ describe('Hyper-Express Cors', () => {
         await appInit(app);
       });
 
-      it(`should add cors headers based on the first config`, async () => {
+      it(`should add cors headers based on the first config cors-test`, async () => {
         return spec()
           .get('/')
           .expectHeader('access-control-allow-origin', 'example.com')

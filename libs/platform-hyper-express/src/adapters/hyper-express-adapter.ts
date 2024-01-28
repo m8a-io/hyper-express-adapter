@@ -12,6 +12,7 @@ import {
   VersionValue,
   VersioningOptions,
 } from '@nestjs/common/interfaces';
+import { CorsOptions, CorsOptionsDelegate } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { NestApplicationOptions } from '@nestjs/common/interfaces/nest-application-options.interface';
 import {
   isNil,
@@ -28,6 +29,7 @@ import {
   Server,
   ServerConstructorOptions,
 } from 'hyper-express';
+import * as cors from 'cors';
 
 type VersionedRoute = <
   TRequest extends Record<string, any> = any,
@@ -199,7 +201,9 @@ export class HyperExpressAdapter extends AbstractHttpAdapter<
     return request.originalUrl;
   }
 
-  public async enableCors(options: any) {}
+  public enableCors(options: CorsOptions | CorsOptionsDelegate<any>) {
+    return this.use(cors(options));
+  }
 
   public createMiddlewareFactory(
     requestMethod: RequestMethod,

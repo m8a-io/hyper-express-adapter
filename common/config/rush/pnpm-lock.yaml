@@ -28,6 +28,9 @@ importers:
       class-validator:
         specifier: ~0.14.1
         version: 0.14.1
+      cors:
+        specifier: 2.8.5
+        version: 2.8.5
       reflect-metadata:
         specifier: ^0.2.0
         version: 0.2.1
@@ -50,6 +53,9 @@ importers:
       '@types/body-parser':
         specifier: ~1.19.5
         version: 1.19.5
+      '@types/cors':
+        specifier: ~2.8.17
+        version: 2.8.17
       '@types/eventsource':
         specifier: ~1.1.15
         version: 1.1.15
@@ -199,6 +205,12 @@ importers:
       '@nestjs/core':
         specifier: 10.3.1
         version: 10.3.1(@nestjs/common@10.3.1)(@nestjs/websockets@10.3.1)(reflect-metadata@0.2.1)(rxjs@7.8.1)
+      '@types/content-type':
+        specifier: ~1.1.8
+        version: 1.1.8
+      '@types/cors':
+        specifier: ~2.8.17
+        version: 2.8.17
 
   ../../libs/platform-hyper-express-ws:
     dependencies:
@@ -1311,8 +1323,18 @@ packages:
       '@types/node': 20.11.6
     dev: true
 
+  /@types/content-type@1.1.8:
+    resolution: {integrity: sha512-1tBhmVUeso3+ahfyaKluXe38p+94lovUZdoVfQ3OnJo9uJC42JT7CBoN3k9HYhAae+GwiBYmHu+N9FZhOG+2Pg==}
+    dev: true
+
   /@types/cookiejar@2.1.5:
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
+    dev: true
+
+  /@types/cors@2.8.17:
+    resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
+    dependencies:
+      '@types/node': 20.11.6
     dev: true
 
   /@types/eslint-scope@3.7.7:
